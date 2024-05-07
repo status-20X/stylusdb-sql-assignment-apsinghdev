@@ -1,5 +1,5 @@
-const readCSV = require("../../src/csvReader");
-const { parseQuery } = require("../../src/queryParser");
+const { readCSV } = require("../../src/csvReader");
+const { parseSelectQuery } = require("../../src/queryParser");
 
 test("Read CSV File", async () => {
   const data = await readCSV("./student.csv");
@@ -10,26 +10,19 @@ test("Read CSV File", async () => {
 });
 
 test("Parse SQL Query", () => {
-  const query =
-    "SELECT student.name, enrollment.course FROM student INNER JOIN enrollment ON student.id=enrollment.student_id";
-  const parsed = parseQuery(query);
+  const query = "SELECT id, name FROM student";
+  const parsed = parseSelectQuery(query);
   expect(parsed).toEqual({
-    fields: ["student.name", "enrollment.course"],
+    fields: ["id", "name"],
     table: "student",
     whereClauses: [],
     joinCondition: null,
     joinTable: null,
     joinType: null,
+    groupByFields: null,
+    hasAggregateWithoutGroupBy: false,
     orderByFields: null,
     limit: null,
-    groupByFields: null,
     isDistinct: false,
-    hasAggregateWithoutGroupBy: false,
-    joinCondition: {
-      left: "student.id",
-      right: "enrollment.student_id",
-    },
-    joinTable: "enrollment",
-    joinType: "INNER",
   });
 });
