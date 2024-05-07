@@ -112,8 +112,13 @@ async function executeSELECTQuery(query) {
     groupByFields,
     hasAggregateWithoutGroupBy,
     orderByFields,
+    limit,
   } = parseQuery(query);
   let data = await readCSV(`${table}.csv`);
+
+  if (limit !== null) {
+    data = data.slice(0, limit);
+  }
 
   // Perform INNER JOIN if specified
   if (joinTable && joinCondition) {

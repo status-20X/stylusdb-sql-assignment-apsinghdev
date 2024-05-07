@@ -5,6 +5,16 @@ function parseQuery(query) {
   // Trim the query to remove any leading/trailing whitespaces
   query = query.trim();
 
+  // Updated regex to capture LIMIT clause
+  const limitRegex = /\sLIMIT\s(\d+)/i;
+  const limitMatch = query.match(limitRegex);
+
+  let limit = null;
+  if (limitMatch) {
+    limit = parseInt(limitMatch[1]);
+    query = query.replace(limitRegex, ""); // Remove LIMIT clause
+  }
+
   // Updated regex to capture ORDER BY clause
   const orderByRegex = /\sORDER BY\s(.+)/i;
   const orderByMatch = query.match(orderByRegex);
@@ -15,10 +25,9 @@ function parseQuery(query) {
       const [fieldName, order] = field.trim().split(/\s+/);
       return { fieldName, order: order ? order.toUpperCase() : "ASC" };
     });
+    // Remove ORDER BY clause from the query for further processing
+    query = query.replace(orderByRegex, "");
   }
-
-  // Remove ORDER BY clause from the query for further processing
-  query = query.replace(orderByRegex, "");
 
   // Split the query at the GROUP BY clause if it exists
   const groupBySplit = query.split(/\sGROUP BY\s/i);
@@ -69,6 +78,7 @@ function parseQuery(query) {
     groupByFields,
     hasAggregateWithoutGroupBy,
     orderByFields,
+    limit
   };
 }
 
