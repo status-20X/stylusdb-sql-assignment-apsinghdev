@@ -20,6 +20,7 @@ test("Parse SQL Query", () => {
     joinCondition: null,
     joinTable: null,
     limit: null,
+    isDistinct: false,
     orderByFields: null,
     joinType: null,
     groupByFields: null,
@@ -53,6 +54,7 @@ test("Parse SQL Query with WHERE Clause", () => {
     joinCondition: null,
     joinTable: null,
     limit: null,
+    isDistinct: false,
     orderByFields: null,
     joinType: null,
     groupByFields: null,
@@ -90,6 +92,7 @@ test("Parse SQL Query with Multiple WHERE Clauses", () => {
     joinCondition: null,
     joinTable: null,
     limit: null,
+    isDistinct: false,
     orderByFields: null,
     joinType: null,
     groupByFields: null,
@@ -103,6 +106,7 @@ test("Execute SQL Query with Complex WHERE Clause", async () => {
   expect(result.length).toBe(1);
   expect(result[0]).toEqual({ id: "1", name: "John" });
 });
+
 test("Execute SQL Query with Greater Than", async () => {
   const queryWithGT = "SELECT id FROM student WHERE age > 22";
   const result = await executeSELECTQuery(queryWithGT);

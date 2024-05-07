@@ -8,6 +8,7 @@ test("Read CSV File", async () => {
   expect(data[0].name).toBe("John");
   expect(data[0].age).toBe("30"); //ignore the string type here, we will fix this later
 });
+
 test("Parse SQL Query", () => {
   const query =
     "SELECT student.name, enrollment.course FROM student INNER JOIN enrollment ON student.id=enrollment.student_id";
@@ -22,6 +23,7 @@ test("Parse SQL Query", () => {
     orderByFields: null,
     limit: null,
     groupByFields: null,
+    isDistinct: false,
     hasAggregateWithoutGroupBy: false,
     joinCondition: {
       left: "student.id",

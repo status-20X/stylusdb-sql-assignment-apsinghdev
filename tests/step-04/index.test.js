@@ -9,6 +9,7 @@ test("Read CSV File", async () => {
   expect(data[0].name).toBe("John");
   expect(data[0].age).toBe("30"); //ignore the string type here, we will fix this later
 });
+
 test("Parse SQL Query", () => {
   const query =
     "SELECT student.name, enrollment.course FROM student INNER JOIN enrollment ON student.id=enrollment.student_id";
@@ -23,6 +24,7 @@ test("Parse SQL Query", () => {
     limit: null,
     orderByFields: null,
     groupByFields: null,
+    isDistinct: false,
     hasAggregateWithoutGroupBy: false,
     joinCondition: {
       left: "student.id",
@@ -31,4 +33,14 @@ test("Parse SQL Query", () => {
     joinTable: "enrollment",
     joinType: "INNER",
   });
+});
+
+test("Execute SQL Query", async () => {
+  const query = "SELECT id, name FROM student";
+  const result = await executeSELECTQuery(query);
+  expect(result.length).toBeGreaterThan(0);
+  expect(result[0]).toHaveProperty("id");
+  expect(result[0]).toHaveProperty("name");
+  expect(result[0]).not.toHaveProperty("age");
+  expect(result[0]).toEqual({ id: "1", name: "John" });
 });
